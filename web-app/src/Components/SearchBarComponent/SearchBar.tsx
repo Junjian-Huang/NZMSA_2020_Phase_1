@@ -8,7 +8,7 @@ interface ISearchBarProps{
 }
 
 
-function SearchBar() {
+function SearchBar(props:ISearchBarProps) {
 
     const [SearchQuery, setSearchQuery] = useState<string | null>("");
     const handleSearchQueryChange = (s: string | null) =>{
@@ -22,7 +22,7 @@ function SearchBar() {
             let UserInput: IUserInput = {
                 SearchQuery: SearchQuery
             }
-            //props.SetUserInput(UserInput);
+            props.SetUserInput(UserInput);
         } else {
             setHasFocus(true);
         }
