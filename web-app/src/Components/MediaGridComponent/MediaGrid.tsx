@@ -2,40 +2,39 @@ import React, { useState, useEffect } from 'react';
 import MediaCard from '../MediaCardComponent/MediaCard';
 import { Grid } from '@material-ui/core';
 import './MediaGrid.css';
-
+import {IUserInput} from '../../Common/Interfaces';
 
 interface IState {
-    links: any[];
-    data: any[];
+    links: string|null;   
 }
-
 interface IMediaGridProps {
     SearchQuery: (string | null);
 }
-
 function MediaGrid(props: IMediaGridProps) {
 
-    const [ItemArray, setItemArray] = useState<IState[]>([{ links: [], data: [] }]);
+    const [ItemArray, setItemArray] = useState<IState[]>([{ links: '' }]);
 
     useEffect(() => {
-        fetch('https://images-api.nasa.gov/search?media_type=image&q=' + props.SearchQuery)
+        fetch('https://pixabay.com/api/?key=17485978-f8ab03508758e8c2c6e39e620&q='+ props.SearchQuery +'+flowers&image_type=photo')
             .then(response => response.json())
             .then(response => {
-                setItemArray(response.collection.items)
+                //console.log(response.hits);
+                setItemArray(response.hits)
             })
+            
             .catch(() => console.log("it didn't work")
             );
 
     }, [props.SearchQuery]);
-
     var Cards: JSX.Element[] = [];
     ItemArray.forEach((el: IState, i: Number) => {
-        if (!el || !el.links[0] || !el.data) {
-            return;
-        }
+        console.log(el);
+        //if (!el || !el.links) {
+            //return;
+        //}
         Cards.push(
             <Grid key={"card_"+i} item sm={6} md={4} lg={3} className="MediaGridCard">
-                <MediaCard ImageUrl={el['links'][0]['href']} Description={el["data"][0]['description']} />
+                <MediaCard ImageUrl={el.toString()} Description={''} />
             </Grid>)
     })
 
