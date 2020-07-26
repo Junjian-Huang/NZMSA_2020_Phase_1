@@ -5,17 +5,14 @@ import './MediaGrid.css';
 //import {IUserInput} from '../../Common/Interfaces';
 
 interface IState {
-       
+       webformatURL: string ;
 }
 interface IMediaGridProps {
     SearchQuery: (string | null);
 }
 function MediaGrid(props: IMediaGridProps) {
-
-    const [ItemArray, setItemArray] = useState<IState[]>([]);
-
+    const [ItemArray, setItemArray] = useState<IState[]>([{webformatURL: ''}]);
     const apik = process.env.REACT_APP_API_KEY;
-    
     useEffect(() => {
         fetch('https://pixabay.com/api/?key='+ apik +'&q='+ props.SearchQuery +'+flowers&image_type=photo')
             .then(response => response.json())
@@ -26,19 +23,16 @@ function MediaGrid(props: IMediaGridProps) {
             .catch(() => console.log("it didn't work")
             );
     }, [props.SearchQuery]);
-    console.log(ItemArray);
     var Cards: JSX.Element[] = [];
-    
     ItemArray.forEach((el: IState, i: Number) => {
-        //console.log(el);
-        if (!el ) {
+        if (!el || !el.webformatURL[0]) {
             console.log("nothing");
             return;
         }  
-        //console.log(el);
+        console.log(el);
         Cards.push(
             <Grid key={"card_"+i} item sm={6} md={4} lg={3} className="MediaGridCard">
-                <MediaCard ImageUrl={'el.webformatURL'} Description={''} />
+                <MediaCard ImageUrl={el.webformatURL} Description={'gggggggggggggggggggggggggggggggggggggggg'} />
             </Grid>)
     })
 
